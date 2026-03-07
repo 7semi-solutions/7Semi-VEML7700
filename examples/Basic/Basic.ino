@@ -62,16 +62,8 @@ void setup() {
 }
 
 void loop() {
-   uint16_t raw = 0;
   float lux = 0;
-  float white = 0;
-  if (light.readRawALS(raw)) {
-    Serial.print("Ambient light Raw: ");
-    Serial.println(raw);
-  } else {
-    Serial.println("Failed to read lux");
-  }
-
+  uint16_t white = 0;
   // Read ambient light
   if (light.readLux(lux)) {
     Serial.print("Ambient light : ");
