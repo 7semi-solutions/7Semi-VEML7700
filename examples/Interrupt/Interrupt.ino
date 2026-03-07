@@ -23,14 +23,13 @@
 
 VEML7700_7Semi light;
 
-void setup()
-{
+void setup() {
   Serial.begin(115200);
 
-  if(!light.begin())
-  {
+  if (!light.begin()) {
     Serial.println("Sensor not detected");
-    while(1);
+    while (1)
+      ;
   }
 
   /**
@@ -42,18 +41,35 @@ void setup()
   light.setInterrupt(true);
 }
 
-void loop()
-{
-  bool low, high;
+void loop() {
+  float lux = 0;
+  uint16_t white = 0;
+  bool low = false, high = false;
 
-  if(light.readInterruptStatus(low, high))
-  {
-    if(high)
-      Serial.println("High light threshold reached");
-
-    if(low)
-      Serial.println("Low light threshold reached");
+  // Read ambient light
+  if (!light.readLux(lux)) {
+    Serial.println("Failed to read lux");
   }
 
+  // Read white level
+  if (!light.getWhiteLevel(white)) {
+    Serial.println("Failed to read white level");
+  }
+
+  // Read interrupt status
+  if (!light.readInterruptStatus(low, high)) {
+    Serial.println("Failed to read interrupt status");
+  }
+
+  // Print values
+  Serial.print("Ambient light: "); Serial.print(lux);
+  Serial.print("  White Level: "); Serial.print(white);
+
+  if (high)  Serial.print("  HIGH threshold!");
+  if (low)   Serial.print("  LOW threshold!");
+
+  Serial.println();
+
+  // Wait before next reading
   delay(500);
 }
