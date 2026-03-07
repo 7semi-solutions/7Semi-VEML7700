@@ -37,7 +37,7 @@ void setup()
    * Configure interrupt thresholds
    */
   light.setThresholdHigh(20000);
-  light.setThresholdLow(100);
+  light.setThresholdLow(1000);
 
   light.setInterrupt(true);
 }
