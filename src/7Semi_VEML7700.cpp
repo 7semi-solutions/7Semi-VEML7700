@@ -124,7 +124,7 @@ bool VEML7700_7Semi::setGain(VEML7700_Gain gain)
     /**
      * Update lux conversion factor
      */
-    lux_per_lsb = resolution / lux_gain;
+    lux_per_lsb = 0.0576 * resolution / lux_gain;
 
     return true;
 }
@@ -160,26 +160,34 @@ bool VEML7700_7Semi::setIntegrationTime(VEML7700_IntegrationTime integrationTime
     switch (integrationTime)
     {
     case VEML7700_IT_100MS:
-        resolution = 0.0336f;
+        resolution = 1.0f;
         break;
 
     case VEML7700_IT_200MS:
-        resolution = 0.0168f;
+        resolution = 0.5f;
         break;
 
     case VEML7700_IT_400MS:
-        resolution = 0.0084f;
+        resolution = 0.25f;
         break;
 
     case VEML7700_IT_800MS:
-        resolution = 0.0042f;
+        resolution = 0.125f;
+        break;
+
+    case VEML7700_IT_50MS:
+        resolution = 2.0f;
+        break;
+
+    case VEML7700_IT_25MS:
+        resolution = 4.0f;
         break;
 
     default:
-        resolution = 0.0336f;
+        resolution = 1.0f;
     }
 
-    lux_per_lsb = resolution / lux_gain;
+    lux_per_lsb = 0.0576 * resolution / lux_gain;
 
     return true;
 }
@@ -323,6 +331,16 @@ bool VEML7700_7Semi::powerOn(bool enable)
 }
 
 /**
+ * Reset sensor configuration
+ *
+ * - Restores default configuration
+ */
+bool VEML7700_7Semi::reset()
+{
+  return writeReg(VEML7700_ALS_CONF_0,0x0000);
+}
+
+/**
  * Configure ALS high threshold
  *
  * - Defines upper light level limit for interrupt generation
@@ -452,28 +470,13 @@ bool VEML7700_7Semi::readLux(float &lux)
 }
 
 /**
- * Read raw WHITE channel
- */
-bool VEML7700_7Semi::readRawWhite(uint16_t &rawWhite)
-{
-    return readReg(VEML7700_REG_WHITE, rawWhite);
-}
-
-/**
  * Read white light level
  *
  * - Broadband light measurement
  */
-bool VEML7700_7Semi::getWhiteLevel(float &whiteLevel)
+bool VEML7700_7Semi::readRagetWhiteLevelwWhite(uint16_t &rawWhite)
 {
-    uint16_t raw;
-
-    if (!readRawWhite(raw))
-        return false;
-
-    whiteLevel = raw * lux_per_lsb;
-
-    return true;
+    return readReg(VEML7700_REG_WHITE, rawWhite);
 }
 
 /**
@@ -583,7 +586,7 @@ bool VEML7700_7Semi::readBits(uint8_t reg, uint8_t pos, uint8_t len, uint16_t &v
   uint16_t v;
   if (!readReg(reg, v))
     return false;
-
+  Serial.println(v,HEX);
   uint16_t mask = ((1 << len) - 1) << pos;
   value = (uint16_t)(v & mask) >> pos;
   return true;
