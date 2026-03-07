@@ -48,12 +48,29 @@ void setup() {
    * Configure sensor sensitivity
    */
   light.setGain(VEML7700_GAIN_2);
-  light.setIntegrationTime(VEML7700_IT_400MS);
+  uint8_t gain = 0;
+  if (light.getGain(gain)) {
+    Serial.print("Gain: ");
+    Serial.println(gain);
+  }
+  light.setIntegrationTime(VEML7700_IT_100MS);
+  uint8_t it = 0;
+  if (light.getIntegrationTime(it)) {
+    Serial.print("IT: ");
+    Serial.println(it);
+  }
 }
 
 void loop() {
+   uint16_t raw = 0;
   float lux = 0;
   float white = 0;
+  if (light.readRawALS(raw)) {
+    Serial.print("Ambient light Raw: ");
+    Serial.println(raw);
+  } else {
+    Serial.println("Failed to read lux");
+  }
 
   // Read ambient light
   if (light.readLux(lux)) {
