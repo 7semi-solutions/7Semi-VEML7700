@@ -40,8 +40,8 @@ enum VEML7700_Gain
 {
     VEML7700_GAIN_1     = 0, // gain = x1
     VEML7700_GAIN_2     = 1, // gain = x2
-    VEML7700_GAIN_0_125 = 2, // gain = x3
-    VEML7700_GAIN_0_25  = 3  // gain = x4
+    VEML7700_GAIN_0_125 = 2, // gain = x1/8
+    VEML7700_GAIN_0_25  = 3  // gain = x1/4
 };
 
 /**
@@ -159,6 +159,8 @@ public:
      */
     bool getIntegrationTime(uint8_t &integrationTime);
 
+
+    float getLuxResolution(uint8_t gain, uint8_t integration);
     /**
      * Automatic measurement range adjustment
      *
@@ -248,16 +250,11 @@ public:
     bool readLux(float &lux);
 
     /**
-     * Read raw white channel data
-     */
-    bool readRawWhite(uint16_t &rawWhite);
-
-    /**
      * Read white light level
      *
      * - Broadband light measurement
      */
-    bool getWhiteLevel(float &whiteLevel);
+    bool getWhiteLevel(uint16_t &rawWhite);
 
     /**
      * Read interrupt status flags
@@ -265,9 +262,6 @@ public:
      * - Indicates if thresholds were exceeded
      */
     bool readInterruptStatus(bool &thLow, bool &thHigh);
-
-    bool readReg(uint8_t reg, uint16_t &value);
-
 
 private:
 
@@ -300,7 +294,7 @@ private:
     // uint16_t  last_raw_wl = 0;
 
     bool writeReg(uint8_t reg, uint16_t value);
-    // bool readReg(uint8_t reg, uint16_t &value);
+    bool readReg(uint8_t reg, uint16_t &value);
 
     bool writeBits(uint8_t reg, uint8_t pos, uint8_t len, uint16_t value);
     bool readBits(uint8_t reg, uint8_t pos, uint8_t len, uint16_t &value);
