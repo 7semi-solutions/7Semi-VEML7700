@@ -474,7 +474,7 @@ bool VEML7700_7Semi::readLux(float &lux)
  *
  * - Broadband light measurement
  */
-bool VEML7700_7Semi::readRagetWhiteLevelwWhite(uint16_t &rawWhite)
+bool VEML7700_7Semi::getWhiteLevel(uint16_t &rawWhite)
 {
     return readReg(VEML7700_REG_WHITE, rawWhite);
 }
@@ -624,3 +624,4 @@ bool VEML7700_7Semi::writeBit(uint8_t reg, uint8_t pos, bool value)
 {
   return writeBits(reg, pos, 1, value);
 }
+
