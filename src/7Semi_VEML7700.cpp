@@ -586,7 +586,7 @@ bool VEML7700_7Semi::readBits(uint8_t reg, uint8_t pos, uint8_t len, uint16_t &v
   uint16_t v;
   if (!readReg(reg, v))
     return false;
-  Serial.println(v,HEX);
+  // Serial.println(v,HEX);
   uint16_t mask = ((1 << len) - 1) << pos;
   value = (uint16_t)(v & mask) >> pos;
   return true;
@@ -624,4 +624,5 @@ bool VEML7700_7Semi::writeBit(uint8_t reg, uint8_t pos, bool value)
 {
   return writeBits(reg, pos, 1, value);
 }
+
 
