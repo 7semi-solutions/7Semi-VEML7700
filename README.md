@@ -55,13 +55,13 @@ The **VEML7700 communicates using I²C**.
 
 Default sensor address:
 
-```
+```cpp
 0x10
 ```
 
 Recommended I²C speed:
 
-```
+```cpp
 100 kHz – 400 kHz
 ```
 
@@ -87,7 +87,7 @@ Recommended I²C speed:
 
 # Example
 
-```
+```cpp
 #include <7Semi_VEML7700.h>
 
 VEML7700_7Semi light;
@@ -123,7 +123,7 @@ void loop()
 
 ## Reading Ambient Light (Lux)
 
-```
+```cpp
 float lux;
 
 light.readLux(lux);
@@ -138,7 +138,7 @@ Returns ambient light value in **lux**.
 
 ## Reading Raw ALS Data
 
-```
+```cpp
 uint16_t raw;
 
 light.readRawALS(raw);
@@ -153,7 +153,7 @@ Returns **16-bit ALS ADC value**.
 
 ## Reading White Channel
 
-```
+```cpp
 float white;
 
 light.getWhiteLevel(white);
@@ -170,13 +170,13 @@ Returns **broadband white light measurement**.
 
 ## Gain
 
-```
+```cpp
 light.setGain(VEML7700_GAIN_1);
 ```
 
 Available gain settings:
 
-```
+```cpp
 VEML7700_GAIN_1
 VEML7700_GAIN_2
 VEML7700_GAIN_0_25
@@ -187,13 +187,13 @@ VEML7700_GAIN_0_125
 
 ## Integration Time
 
-```
+```cpp
 light.setIntegrationTime(VEML7700_IT_100MS);
 ```
 
 Available integration times:
 
-```
+```cpp
 VEML7700_IT_25MS
 VEML7700_IT_50MS
 VEML7700_IT_100MS
@@ -210,7 +210,7 @@ Longer integration times improve **low-light resolution**.
 
 The driver supports **automatic gain and integration adjustment**.
 
-```
+```cpp
 light.autoRange();
 ```
 
@@ -224,7 +224,7 @@ Interrupts can be triggered when ALS measurements cross configured thresholds.
 
 Example:
 
-```
+```cpp
 light.setThresholdHigh(20000);
 light.setThresholdLow(100);
 light.setInterrupt(true);
@@ -234,13 +234,13 @@ light.setInterrupt(true);
 
 # Power Saving Mode
 
-```
+```cpp
 light.setPowerMode(VEML7700_PSM_MODE2, true);
 ```
 
 Power saving modes:
 
-```
+```cpp
 VEML7700_PSM_MODE1
 VEML7700_PSM_MODE2
 VEML7700_PSM_MODE3
